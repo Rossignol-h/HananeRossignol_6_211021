@@ -12,7 +12,7 @@ exports.createSauce = (req, res, next) => {
   })
   sauce
     .save()
-    .then(() => res.status(201).json({ message: "La sauce est enregistrée !" }))
+    .then(() => res.status(201).json({ message: "Sauce enregistrée" }))
     .catch((error) => res.status(400).json({ error }))
 }
 //----------------------------- Middleware GET ----------------------------------
@@ -41,10 +41,10 @@ exports.modifySauce = (req, res, next) => {
     { _id: req.params.id },
     { ...sauceObject, _id: req.params.id }
   )
-    .then(() => res.status(200).json({ message: "La sauce est modifiée !" }))
-    .catch(error => res.status(400).json({ error }));
+    .then(() => res.status(200).json({ message: "Sauce modifiée" }))
+    .catch((error) => res.status(400).json({ error }))
 }
-//------------------------ Middleware POST likes / dislikes ----------------------
+//------------------- Middleware POST likes / dislikes ----------------------
 
 exports.likeOneSauce = (req, res) => {
   let userClic = req.body.like
@@ -58,9 +58,7 @@ exports.likeOneSauce = (req, res) => {
         $push: { usersDisliked: userId },
       }
     )
-      .then(() =>
-        res.status(200).json({ message: "Vous n'aimez pas cette sauce" })
-      )
+      .then(() => res.status(200).json({ message: "Sauce dislikée" }))
       .catch((error) => res.status(400).json({ error }))
   } else if (userClic === 1) {
     Sauce.updateOne(
@@ -70,7 +68,7 @@ exports.likeOneSauce = (req, res) => {
         $push: { usersLiked: userId },
       }
     )
-      .then(() => res.status(200).json({ message: "Vous aimez cette sauce" }))
+      .then(() => res.status(200).json({ message: "Sauce likée" }))
       .catch((error) => res.status(400).json({ error }))
   } else {
     Sauce.findOne({ _id: sauceId })
@@ -83,9 +81,7 @@ exports.likeOneSauce = (req, res) => {
               $pull: { usersLiked: userId },
             }
           )
-            .then(() =>
-              res.status(200).json({ message: "Vous avez annulé votre choix" })
-            )
+            .then(() => res.status(200).json({ message: "choix annulé" }))
             .catch((error) => res.status(400).json({ error }))
         } else {
           Sauce.updateOne(
@@ -95,9 +91,7 @@ exports.likeOneSauce = (req, res) => {
               $pull: { usersDisliked: userId },
             }
           )
-            .then(() =>
-              res.status(200).json({ message: "Vous avez annulé votre choix" })
-            )
+            .then(() => res.status(200).json({ message: "choix annulé" }))
             .catch((error) => res.status(400).json({ error }))
         }
       })
